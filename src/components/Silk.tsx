@@ -5,7 +5,7 @@ import { forwardRef, useRef, useMemo, useLayoutEffect } from "react";
 import { Color } from "three";
 
 
-const hexToNormalizedRGB = (hex) => {
+const hexToNormalizedRGB = (hex: string) => {
   hex = hex.replace("#", "");
   return [
     parseInt(hex.slice(0, 2), 16) / 255,
@@ -85,19 +85,23 @@ void main() {
 `;
 
 
-const SilkPlane = forwardRef(function SilkPlane({ uniforms }, ref) {
+import type { ForwardedRef } from 'react';
+// ...existing code...
+const SilkPlane = forwardRef(function SilkPlane({ uniforms }: { uniforms: any }, ref: ForwardedRef<any>) {
   const { viewport } = useThree();
 
 
   useLayoutEffect(() => {
-    if (ref.current) {
+    if (ref && 'current' in ref && ref.current) {
       ref.current.scale.set(viewport.width, viewport.height, 1);
     }
   }, [ref, viewport]);
 
 
   useFrame((_, delta) => {
-    ref.current.material.uniforms.uTime.value += 0.1 * delta;
+    if (ref && 'current' in ref && ref.current) {
+      ref.current.material.uniforms.uTime.value += 0.1 * delta;
+    }
   });
 
 
@@ -123,7 +127,7 @@ const Silk = ({
   noiseIntensity = 1.5,
   rotation = 0,
 }) => {
-  const meshRef = useRef();
+const meshRef = useRef<any>(null);
 
 
   const uniforms = useMemo(
