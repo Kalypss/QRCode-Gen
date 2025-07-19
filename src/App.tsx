@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import QRCode from 'qrcode';
 import { HexColorPicker } from 'react-colorful';
 import Silk from './components/Silk';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   const [text, setText] = useState('https://github.com/k4lips0');
@@ -218,6 +219,7 @@ function App() {
 
   return (
     <div className="app-container">
+      <Analytics />
       <Silk speed={5} scale={1} color="#7B7481" noiseIntensity={1.5} rotation={0} />
       <div className="main-content-overlay">
         <div className="layout-grid">
